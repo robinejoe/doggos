@@ -1,0 +1,56 @@
+body {
+    font-family: 'Anton', sans-serif;
+    background-color: #F8F6E6;
+    color: #785E4D;
+    margin: 0 5rem;
+    border-top: 10px solid #A2C0A4;
+    border-bottom: 10px solid #A2C0A4;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3rem;
+}
+
+h2 {
+    text-align: right;
+    font-size: 1.8rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotateZ(0deg)
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+
+.dog {
+    font-size: 4rem;
+    text-align: center;
+    display: none;
+  }
+
+.spin {
+    animation: spin 2.5s linear infinite;
+}
+
+.doggos {
+    text-align: center;
+}
+
+.breeds {
+    text-align: right;
+    font-size: 1.2rem;
+    background-color: #F8F6E6;
+    border: 3px solid #785E4D;
+}
+
+.dropdown {
+    text-align: right;
+}
+
+i {
+    font-size: 1.6rem;
+}
