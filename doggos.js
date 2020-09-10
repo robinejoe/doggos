@@ -1,49 +1,42 @@
-const BREEDS_URL = 'https://dog.ceo/api/breeds/list/all';
-const select = document.querySelector('.breeds');
+const main = document.getElementById('main');
+const loader = document.getElementById('loader');
+const breedSelect = document.getElementById('breed');
 
-function breedPhoto (breed) {
-    const url = `https://dog.ceo/api/breed/${breed}/images/random`;
-    let dog = document.querySelector('.dog');
-    dog.style.display = "block";
-    document.querySelector('.doggos').innerHTML="";
+async function init () {
+    const res = await fetch('https://dog.ceo/api/breeds/list/all');
+    const resJson = await res.json();
 
-    fetch(url)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(data) {
-            const img = document.createElement('img');
-            img.src = data.message;
-            img.alt = breed;
-            img.addEventListener("load", function (event) {
-                dog.style.display="none";    
-            });
-            document.querySelector('.doggos').appendChild(img);
-        })
-}
+    let breedOptions = '<option></option>';
+    let breedList = Object.keys(resJson.message);
 
-function initDropDown () {
-fetch(BREEDS_URL)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        const breedsObject = data.message;
-        const breedsArray = Object.keys(breedsObject);
-
-        for (let i =0; i < breedsArray.length; i++) {
-            const option = document.createElement('option');
-            option.value = breedsArray[i];
-            option.innerText = breedsArray[i];
-            select.appendChild(option);
+        for (let i = 0; i < breedList.length; i++) {
+            breedOptions += `<option value =${breedList[i]}>${breedList[i]}</option>`;
         }
-    })
+    breedSelect.innerHTML = breedOptions;
+
+    const randomRes = await fetch('https://dog.ceo/api/breeds/image/random');
+    const randomResJson = await randomRes.json();
+
+    main.src = randomResJson.message;
+
+    breedSelect.addEventListener('change', handleBreedChange);
+
+    main.addEventListener('load', function () {
+        main.classList.add('show');
+        loader.classList.remove('show');
+    });
 }
 
-initDropDown();
+async function handleBreedChange (event) {
+    const breed = event.target.value;
 
-select.addEventListener("change", function (event) {
-    breedPhoto(event.target.value);
-});
+    main.classList.remove('show');
+    loader.classList.add('show');
 
-    
+    const res = await fetch(`https://dog.ceo/api/breed/${breed}/images/random`);
+    const resJson = await res.json();
+
+    main.src = resJson.message;
+}
+
+init ();
